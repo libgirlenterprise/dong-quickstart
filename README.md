@@ -1,6 +1,5 @@
-# dong quickstart guide
 ## Overview
-dong platform http://dong.libgirl.com consists of
+dong platform [http://dong.libgirl.com](http://dong.libgirl.com) consists of
 
 1. **dong** - a [MLOps](https://en.wikipedia.org/wiki/MLOps) project framework.
 2. **dong cloud** - a [MLOps](https://en.wikipedia.org/wiki/MLOps) cloud service for managing cloud training/deployment of a **dong** project. 
