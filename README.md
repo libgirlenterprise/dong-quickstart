@@ -13,7 +13,7 @@ Install client side dong cli
 $ pip install dong
 ```
 ## Signup
-Please [apply via the form](https://dong.libgirl.com/#Getfree)  to get a trial account.
+Please [apply via the form](https://dong.libgirl.com/signup/)  to get a trial account.
 
 ## Login
 ```sh
