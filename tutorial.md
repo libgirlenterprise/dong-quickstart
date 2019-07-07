@@ -400,7 +400,7 @@ As you see, Service class is a general Service structure that
 
 ### Load a trained model in Service class
 
-You can write the model deserialization directly in the constructor of the Service class. Still, in this tutorial we'll write the deserialization code in [another module file](https://hackmd.io/3w1d4ugsTQ62JETPtgyhBQ?both#Model---model-init-by-deserialization) and use itance to compose it into the Service class.
+You can write the model deserialization directly in the constructor of the Service class. Still, in this tutorial we'll write the deserialization code in [another module file](#Model---model-init-by-deserialization) and use itance to compose it into the Service class.
 
 ```python
 from ..model.init.defaultload import DefaultloadModelInit
