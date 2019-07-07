@@ -2,6 +2,19 @@
 ## Overview
 In this tutorial, we'll step-by-step make a simple mnist **dong** MLOps project from coding, training, to deployment. We'll use tensorflow as the machine learning library.
 
+## Installation
+Install client side dong cli
+```bash
+$ pip install dong
+```
+## Signup
+Please [apply via the form](https://dong.libgirl.com/signup/)  to get a trial account.
+
+## Login
+```sh
+$ dong login
+```
+
 ## Project creation
 Use ```dong init``` or ```dong new``` to create a new dong project. For example,
 ```bash
