@@ -547,7 +547,15 @@ New endpoint-name:  ENDPOINT_NAME
 dong endpoint status -e ENDPOINT_NAME
 ```
 ### Get endpoint IP
+```bash
+$ dong endpoint status -e ENDPOINT_NAME
+Endpoint name: ENDPOINT_NAME
+External ip: ENDPOINT_IP
+Status: Running
+```
 ### Test the endpoint
+
+**After** the endpoint status becomes running,
 ```bash
 curl -X POST \
   http://ENDPOINT_IP/api/v1/serve \
