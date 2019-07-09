@@ -202,7 +202,7 @@ class DefaultModel(DefaultModelInit, dong.framework.Model):
 ```
 - ```DefaultModelInit``` implements ```__init__(self, config, data_params, save_dir)``` 
 - In ```.train.default``` we implements ```train(self, data, config)``` 
-- In ```.init.default``` we implements```write(self, save_dir)``` 
+- In ```.serializer.default``` we implements```write(self, save_dir)``` 
 
 Now Let's implement them.
 
@@ -349,9 +349,9 @@ def read(self, save_dir):
 ## Model - model init by deserialization
 ### Use case
 
-We can init a model by loading it from a trained model for
-1. To deploy it to a service function.
-2. To futher train a pre-trained model. **Notice**: **dong** alpha version haven't supported such functionality.
+We can init a model by loading it from a trained model to
+1. Deploy it to a service function.
+2. Futher train a pre-trained model. **Notice**: **dong** alpha version haven't supported such functionality.
 
 ### File creation
 
@@ -369,7 +369,7 @@ class DefaultloadModelInit():
 
 ### Final code of model init module by deserialization
 
-With inheriting [DefaultloadModelInit](#Model---model-init-module) and [import read function](#readself-save_dir), we can have the following model initialization by deserialization
+With inheriting [DefaultModelInit](#Model---model-init-module) and [import read function](#readself-save_dir), we can have the following model initialization by deserialization
 
 Filename: ```/my_dong_mnist/model/init/default_load.py```
 ```python
@@ -426,7 +426,7 @@ As you see, Service class is a general Service structure that
 
 ### Load a trained model in Service class
 
-You can write the model deserialization directly in the constructor of the Service class. Still, in this tutorial we'll write the deserialization code in [another module file](#Model---model-init-by-deserialization) and use itance to compose it into the Service class.
+You can write the model deserialization directly in the constructor of the Service class. Still, in this tutorial we'll write the deserialization code in [another module file](#Model---model-init-by-deserialization) and use inheritance to compose it into the Service class.
 
 ```python
 from ..model.init.defaultload import DefaultloadModelInit
