@@ -129,9 +129,10 @@ def get_data_params(self):
     return DataParams(image_size, num_labels)
 ```
 see [collections.namedtuple](#collectionsnamedtuple) for DataParams()
-### Done module file editing
-Here is the data preparation content for ```my_dong_mnist/data/default.py```
 
+### Final code of data preparation module
+
+Filename: ```my_dong_mnist/data/default.py```
 ```python
 
 from __future__ import division
@@ -186,8 +187,10 @@ To do a train, there are three methods to implement.
 
 You can directly implement three of them in ```my_dong_mnist/model/default.py```. **We don't force** over organizing. Still, in this tutorial we do separate them into different modules. So you can take it as a reference about organizing a larger project.
 
-### Done module file editing
-This is our model file in ```my_dong_mnist/model/default.py``` 
+
+### Final code of model module
+
+File name: ```my_dong_mnist/model/default.py``` 
 ```python
 from .init.default import DefaultModelInit
 import dong.framework
@@ -231,9 +234,11 @@ Even though we can create a model from Keras' API and assign it to an instance v
 ```python
 class DefaultModelInit(tensorflow.keras.models.Sequential):
 ```
-### Done module file editing
+### Final code of model init module
 
-Then we can have a basic **tensorflow** multilevel perceptron model for ```my_dong_mnist/models/init/default.py```
+Then we can have a **tensorflow** multilevel perceptron model.
+
+Filename: ```my_dong_mnist/models/init/default.py```
 ```python
 import tensorflow
 
@@ -276,8 +281,10 @@ This is for configuration and code separation. It helps us do hyperparameter tun
 
 We don't use ```config``` in this tutorial.
 
-### Done editing the training module file
+### Final code of model train module
 Since we already inherent [Keras's Sequential model](https://keras.io/models/sequential/), we can invoke ```self.compile()```, ```self.fit()```, and ```self.evaluate()```.
+
+Filename: ```my_dong_mnist/model/train/default.py```
 ```python
 def train(self, data, config=None):
 
@@ -325,8 +332,10 @@ def read(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
     self.load_weights(_export_path)
 ```
-### Done module file editing
-This is our ```/my_dong_mnist/save_load/default.py```
+
+### Final code of model serializer module
+
+Filename:```/my_dong_mnist/save_load/default.py```
 ```python
 def write(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
@@ -345,10 +354,12 @@ We can init a model by loading it from a trained model for
 2. To futher train a pre-trained model. **Notice**: **dong** alpha version haven't supported such functionality.
 
 ### File creation
+
+run at the root of your ML project, i.e. ```/my_dong_mnist``` in this tutorial:
 ```bash
 $ dong template --model-init-module defaultload
 ```
-And edit ```/my_dong_mnist/model/init/default_load.py```
+And open the generated ```/my_dong_mnist/model/init/default_load.py```, we can see it as follows:
 
 ```python
 class DefaultloadModelInit():
@@ -356,9 +367,11 @@ class DefaultloadModelInit():
         pass
 ```
 
-### Done module file editing
+### Final code of model init module by deserialization
 
 With inheriting [DefaultloadModelInit](#Model---model-init-module) and [import read function](#readself-save_dir), we can have the following model initialization by deserialization
+
+Filename: ```/my_dong_mnist/model/init/default_load.py```
 ```python
 from .default import DefaultModelInit
 from ...data.default import DefaultData
@@ -440,7 +453,9 @@ We can directly use [model.predict](https://www.tensorflow.org/api_docs/python/t
 ```python
     return json.dumps(self.predict(x).tolist())
 ```
-### Done service file editing
+### Final code of service module
+
+Filename: ```/my_dong_mnist/service/default.py```
 ```python
 from __future__ import division
 import json
@@ -488,7 +503,10 @@ setup(name='my_dong_mnist',
           'tensorflow',
       ],
 ```
-### Done dependencies declaration
+
+### Final code of setup file
+
+Filename: ```setup.py```
 ```python
 from setuptools import setup, find_packages
 
