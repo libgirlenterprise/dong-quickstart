@@ -36,36 +36,36 @@ Here is the project structure
 ```
 my_dong_mnist
 ├── my_dong_mnist
-│   ├── __init__.py
-│   ├── config
-│   │   ├── __init__.py
-│   │   └── default.py
-│   ├── data
-│   │   ├── __init__.py
-│   │   └── default.py
-│   ├── model
-│   │   ├── __init__.py
-│   │   ├── default.py
-│   │   ├── init
-│   │   │   ├── __init__.py
-│   │   │   └── default.py
-│   │   ├── serializer
-│   │   │   ├── __init__.py
-│   │   │   └── default.py
-│   │   └── train
-│   │       ├── __init__.py
-│   │       └── default.py
-│   ├── service
-│   │   ├── __init__.py
-│   │   └── default.py
-│   └── tune
-│       ├── __init__.py
-│       └── default.py
+│   ├── __init__.py
+│   ├── config
+│   │   ├── __init__.py
+│   │   └── default.py
+│   ├── data
+│   │   ├── __init__.py
+│   │   └── default.py
+│   ├── model
+│   │   ├── __init__.py
+│   │   ├── default.py
+│   │   ├── init
+│   │   │   ├── __init__.py
+│   │   │   └── default.py
+│   │   ├── serializer
+│   │   │   ├── __init__.py
+│   │   │   └── default.py
+│   │   └── train
+│   │       ├── __init__.py
+│   │       └── default.py
+│   ├── service
+│   │   ├── __init__.py
+│   │   └── default.py
+│   └── tune
+│       ├── __init__.py
+│       └── default.py
 └── setup.py
 ```
 ## Data preparation module
 ### Module file location
-Open ```my_dong_mnist/data/default.py```, and we can see the template:
+Open ```my_dong_mnist/data/default.py```, and you can see the template:
 
 ```python
 import dong.framework
@@ -176,7 +176,7 @@ class DefaultData(dong.framework.Data):
 
 ## Model - model
 ### Module file location
-Open ```my_dong_mnist/model/default.py```, and we can see the template:
+Open ```my_dong_mnist/model/default.py```, and you can see the template:
 ```python
 
 import dong.framework
@@ -191,7 +191,9 @@ To do a train, there are three methods to implement.
 - ```train(self, data, config)``` to do model training
 - ```write(self, save_dir)``` for model serialization
 
-You can directly implement three of them in ```my_dong_mnist/model/default.py```. **We don't force** over organizing. Still, in this tutorial we do separate them into different modules. So you can take it as a reference about organizing a larger project.
+When developioing an ML project, you may need to use many models, data sets, training methods, or hyperparameters in different phases. By creating modules for each functionality and let `DefaultModel` inherit the 3 methods from those that fit your need at the momoent, you can easily use, reuse, and compose those functionalities.
+
+You can also directly implement the 3 methods in ```my_dong_mnist/model/default.py```. **We don't force over modularization**. As a reference for organizing a larger project, here we separate them into different modules. See more in **Modular** and **Customizable** of [dong Framework Features](https://pypi.org/project/dong/).
 
 
 ### Final code of model module
@@ -215,7 +217,7 @@ Now Let's implement them.
 ## Model - model init module
 This module should implement how one model is created or reconstructed.
 ### Module file location 
-Open ```my_dong_mnist/model/init/default.py```, and we can see the template:
+Open ```my_dong_mnist/model/init/default.py```, and you can see the template:
 ```python
 class DefaultModelInit():
 
@@ -268,7 +270,7 @@ class DefaultModelInit(tensorflow.keras.models.Sequential):
 ```
 ## Model - model train module
 ### Module file location
-Open ```my_dong_mnist/model/train/default.py```, and we can see the template:
+Open ```my_dong_mnist/model/train/default.py```, and you can see the template:
 ```python
 def train(self, data, config=None):
     
@@ -400,11 +402,10 @@ class DefaultloadModelInit(DefaultModelInit):
 
 ## Service - service
 ### Module file location
-Edit ```/my_dong_mnist/service/default.py```
+Open ```/my_dong_mnist/service/default.py```, and you can see the template:
 ```python
 import json
 import dong.framework
-
 
 class DefaultService(dong.framework.Service):
 
@@ -430,7 +431,8 @@ Use the [python decorator](https://wiki.python.org/moin/PythonDecorators), ```@d
 As you see, Service class is a general Service structure that
 
 1. you're not forced to utilize machine learning models. That means you can declare multiple handlers for various purposes.
-2. it doesn't bind to any communication protocol. Now on **dong cloud** you can deploy it as a http service endpoint, while in the future **dong** will provide more tools to integrate your model into different application interfaces such as edge computation. 
+2. it doesn't bind to any communication protocol. Now on **dong cloud** you can deploy it as a http service endpoint, while in the future **dong** will provide more tools to integrate your model into different application interfaces such as edge computation.
+3. Again, by letting `DefaultService` inherit the desired functionalities from the prepared modules, you can make it as what you like. Here we load a trained model for the Service class as an example.
 
 ### Load a trained model in Service class
 
@@ -593,4 +595,3 @@ The reply should look something like this
 ```
 [[2.879309568548649e-10, 2.6625946239478004e-11, 2.580107016925126e-09, 5.453760706930488e-12, 0.9999690055847168, 3.3259575649147166e-10, 3.2778924019538636e-10, 4.35676184906697e-07, 2.190379821964683e-10, 3.0488341508316807e-05], [1.3478038130010361e-10, 0.9997259974479675, 6.728584622806011e-08, 5.9139901864568856e-09, 9.023875122693426e-07, 5.708465922182882e-10, 1.2523435088951373e-07, 0.0002721738419495523, 6.667413003924594e-07, 9.076808638042166e-09]]
 ```
-
