@@ -369,7 +369,7 @@ run at the root of your ML project:
 ```bash
 $ dong template --model-init-module defaultload
 ```
-And open the generated ```/my_dong_mnist/model/init/default_load.py```, we can see it as follows:
+And open the generated ```/my_dong_mnist/model/init/defaultload.py```, we can see it as follows:
 
 ```python
 class DefaultloadModelInit():
@@ -381,7 +381,7 @@ class DefaultloadModelInit():
 
 With inheriting [DefaultModelInit](#Model---model-init-module) and [import read function](#readself-save_dir), we can have the following model initialization by deserialization
 
-Filename: ```/my_dong_mnist/model/init/default_load.py```
+Filename: ```/my_dong_mnist/model/init/defaultload.py```
 ```python
 from .default import DefaultModelInit
 from ...data.default import DefaultData
