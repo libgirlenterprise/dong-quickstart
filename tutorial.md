@@ -16,55 +16,61 @@ $ dong login
 ```
 
 ## Project creation
-Use ```dong init``` or ```dong new``` to create a new dong project. For example,
+
+Run ```dong new``` with a project name to create a new dong project. For example,
 ```bash
 $ dong new my_dong_mnist
 ```
-Let's go into the directory ```my_dong_mnist```.
+or create the project directory first then run  ```dong init```, e.g,
+```bash
+some_path:some_id $ mkdir my_dong_mnist
+some_path:some_id $ cd my_dong_mnist
+my_dong_mnist:some_id $ dong init
+```
+
+then let's go into the directory ```my_dong_mnist```.
 ```bash
 $ cd my_dong_mnist
 ```
 Here is the project structure
 ```
-.
+my_dong_mnist
 ├── my_dong_mnist
-│   ├── __init__.py
-│   ├── config
-│   │   ├── __init__.py
-│   │   └── default.py
-│   ├── data
-│   │   ├── __init__.py
-│   │   └── default.py
-│   ├── model
-│   │   ├── __init__.py
-│   │   ├── default.py
-│   │   ├── init
-│   │   │   ├── __init__.py
-│   │   │   └── default.py
-│   │   ├── serializer
-│   │   │   ├── __init__.py
-│   │   │   └── default.py
-│   │   └── train
-│   │       ├── __init__.py
-│   │       └── default.py
-│   ├── service
-│   │   ├── __init__.py
-│   │   └── default.py
-│   └── tune
-│       ├── __init__.py
-│       └── default.py
+│   ├── __init__.py
+│   ├── config
+│   │   ├── __init__.py
+│   │   └── default.py
+│   ├── data
+│   │   ├── __init__.py
+│   │   └── default.py
+│   ├── model
+│   │   ├── __init__.py
+│   │   ├── default.py
+│   │   ├── init
+│   │   │   ├── __init__.py
+│   │   │   └── default.py
+│   │   ├── serializer
+│   │   │   ├── __init__.py
+│   │   │   └── default.py
+│   │   └── train
+│   │       ├── __init__.py
+│   │       └── default.py
+│   ├── service
+│   │   ├── __init__.py
+│   │   └── default.py
+│   └── tune
+│       ├── __init__.py
+│       └── default.py
 └── setup.py
 ```
 ## Data preparation module
 ### Module file location
-Edit ```my_dong_mnist/data/default.py```
+Open ```my_dong_mnist/data/default.py```, and you can see the template:
 
-We have a templated file here.
 ```python
 import dong.framework
 
 class DefaultData(dong.framework.Data):
-
     
     def __init__(self, config=None):
         pass
@@ -102,7 +108,7 @@ data_params.image_size
 data_params.num_labels
 ```
 
-### get_train_data(), get_eval_data()
+### get\_train\_data(), get\_eval\_data()
 When **dong** executes a training, it will invoke 
 
 - ```get_train_date()``` to get the training data  
@@ -117,7 +123,7 @@ def get_eval_data(self):
     return DataPair(self._x_test, self._y_test)
 ```
 
-### get_data_params()
+### get\_data\_params()
 Sometimes we want to know some data information to define our learning model and train mechanism. For example, what the input data dimension is.```get_data_params()``` serves this purpose.
 
 For a basic tensorflow mnist project, it means
@@ -129,9 +135,10 @@ def get_data_params(self):
     return DataParams(image_size, num_labels)
 ```
 see [collections.namedtuple](#collectionsnamedtuple) for DataParams()
-### Done module file editing
-Here is the data preparation content for ```my_dong_mnist/data/default.py```
 
+### Final code of data preparation module
+
+Filename: ```my_dong_mnist/data/default.py```
 ```python
 
 from __future__ import division
@@ -169,7 +176,7 @@ class DefaultData(dong.framework.Data):
 
 ## Model - model
 ### Module file location
-Edit ```my_dong_mnist/model/default.py``` 
+Open ```my_dong_mnist/model/default.py```, and you can see the template:
 ```python
 
 import dong.framework
@@ -184,10 +191,14 @@ To do a train, there are three methods to implement.
 - ```train(self, data, config)``` to do model training
 - ```write(self, save_dir)``` for model serialization
 
-You can directly implement three of them in ```my_dong_mnist/model/default.py```. **We don't force** over organizing. Still, in this tutorial we do separate them into different modules. So you can take it as a reference about organizing a larger project.
+When developioing an ML project, you may need to use many models, data sets, training methods, or hyperparameters in different phases. By creating modules for each functionality and let `DefaultModel` inherit the 3 methods from those that fit your need at the momoent, you can easily use, reuse, and compose those functionalities.
 
-### Done module file editing
-This is our model file in ```my_dong_mnist/model/default.py``` 
+You can also directly implement the 3 methods in ```my_dong_mnist/model/default.py```. **We don't force over modularization**. As a reference for organizing a larger project, here we separate them into different modules. See more in **Modular** and **Customizable** of [dong Framework Features](https://pypi.org/project/dong/).
+
+
+### Final code of model module
+
+File name: ```my_dong_mnist/model/default.py``` 
 ```python
 from .init.default import DefaultModelInit
 import dong.framework
@@ -199,14 +210,14 @@ class DefaultModel(DefaultModelInit, dong.framework.Model):
 ```
 - ```DefaultModelInit``` implements ```__init__(self, config, data_params, save_dir)``` 
 - In ```.train.default``` we implements ```train(self, data, config)``` 
-- In ```.init.default``` we implements```write(self, save_dir)``` 
+- In ```.serializer.default``` we implements```write(self, save_dir)``` 
 
 Now Let's implement them.
 
 ## Model - model init module
 This module should implement how one model is created or reconstructed.
 ### Module file location 
-Edit ```my_dong_mnist/model/init/default.py```
+Open ```my_dong_mnist/model/init/default.py```, and you can see the template:
 ```python
 class DefaultModelInit():
 
@@ -231,9 +242,11 @@ Even though we can create a model from Keras' API and assign it to an instance v
 ```python
 class DefaultModelInit(tensorflow.keras.models.Sequential):
 ```
-### Done module file editing
+### Final code of model init module
 
-Then we can have a basic **tensorflow** multilevel perceptron model for ```my_dong_mnist/models/init/default.py```
+Then we can have a **tensorflow** multilevel perceptron model.
+
+Filename: ```my_dong_mnist/models/init/default.py```
 ```python
 import tensorflow
 
@@ -257,7 +270,7 @@ class DefaultModelInit(tensorflow.keras.models.Sequential):
 ```
 ## Model - model train module
 ### Module file location
-Edit ```my_dong_mnist/model/train/default.py```
+Open ```my_dong_mnist/model/train/default.py```, and you can see the template:
 ```python
 def train(self, data, config=None):
     
@@ -276,8 +289,10 @@ This is for configuration and code separation. It helps us do hyperparameter tun
 
 We don't use ```config``` in this tutorial.
 
-### Done editing the training module file
+### Final code of model train module
 Since we already inherent [Keras's Sequential model](https://keras.io/models/sequential/), we can invoke ```self.compile()```, ```self.fit()```, and ```self.evaluate()```.
+
+Filename: ```my_dong_mnist/model/train/default.py```
 ```python
 def train(self, data, config=None):
 
@@ -291,7 +306,7 @@ def train(self, data, config=None):
 
 ## Model - model serializer module
 ### Module file location
-Edit ```/my_dong_mnist/model/serializer/default.py```
+Open ```/my_dong_mnist/model/serializer/default.py```, and we can see the template:
 ```python
 def write(self, save_dir):
     pass
@@ -307,9 +322,11 @@ This is the method to implement training model serialization.
 We'll import ```write()``` function into the final model class. So, the ```self``` means the ```self``` of the model instance. 
 
 #### save_dir
-```save_dir``` is the directory path for you to save the trained model output.
+
+`save_dir` is the directory path for you to save the trained model output.
 
 We'll use TensorFlow Keras [tensorflow.keras.Model.save_weights](https://www.tensorflow.org/api_docs/python/tf/keras/Model#save_weights) to output the hdf5 file. And here is the code,
+
 ```python
 def write(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
@@ -325,8 +342,10 @@ def read(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
     self.load_weights(_export_path)
 ```
-### Done module file editing
-This is our ```/my_dong_mnist/save_load/default.py```
+
+### Final code of model serializer module
+
+Filename:```/my_dong_mnist/save_load/default.py```
 ```python
 def write(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
@@ -335,20 +354,22 @@ def write(self, save_dir):
 def read(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
     self.load_weights(export_path)
-```    
+```
 
 ## Model - model init by deserialization
 ### Use case
 
-We can init a model by loading it from a trained model for
-1. To deploy it to a service function.
-2. To futher train a pre-trained model. **Notice**: **dong** alpha version haven't supported such functionality.
+We can init a model by loading it from a trained model to
+1. Deploy it to a service function.
+2. Futher train a pre-trained model. **Notice**: **dong** alpha version haven't supported such functionality.
 
 ### File creation
+
+run at the root of your ML project:
 ```bash
 $ dong template --model-init-module defaultload
 ```
-And edit ```/my_dong_mnist/model/init/default_load.py```
+And open the generated ```/my_dong_mnist/model/init/default_load.py```, we can see it as follows:
 
 ```python
 class DefaultloadModelInit():
@@ -356,9 +377,11 @@ class DefaultloadModelInit():
         pass
 ```
 
-### Done module file editing
+### Final code of model init module by deserialization
 
-With inheriting [DefaultloadModelInit](#Model---model-init-module) and [import read function](#readself-save_dir), we can have the following model initialization by deserialization
+With inheriting [DefaultModelInit](#Model---model-init-module) and [import read function](#readself-save_dir), we can have the following model initialization by deserialization
+
+Filename: ```/my_dong_mnist/model/init/default_load.py```
 ```python
 from .default import DefaultModelInit
 from ...data.default import DefaultData
@@ -379,11 +402,10 @@ class DefaultloadModelInit(DefaultModelInit):
 
 ## Service - service
 ### Module file location
-Edit ```/my_dong_mnist/service/default.py```
+Open ```/my_dong_mnist/service/default.py```, and you can see the template:
 ```python
 import json
 import dong.framework
-
 
 class DefaultService(dong.framework.Service):
 
@@ -409,11 +431,12 @@ Use the [python decorator](https://wiki.python.org/moin/PythonDecorators), ```@d
 As you see, Service class is a general Service structure that
 
 1. you're not forced to utilize machine learning models. That means you can declare multiple handlers for various purposes.
-2. it doesn't bind to any communication protocol. Now on **dong cloud** you can deploy it as a http service endpoint, while in the future **dong** will provide more tools to integrate your model into different application interfaces such as edge computation. 
+2. it doesn't bind to any communication protocol. Now on **dong cloud** you can deploy it as a http service endpoint, while in the future **dong** will provide more tools to integrate your model into different application interfaces such as edge computation.
+3. Again, by letting `DefaultService` inherit the desired functionalities from the prepared modules, you can make it as what you like. Here we load a trained model for the Service class as an example.
 
 ### Load a trained model in Service class
 
-You can write the model deserialization directly in the constructor of the Service class. Still, in this tutorial we'll write the deserialization code in [another module file](#Model---model-init-by-deserialization) and use itance to compose it into the Service class.
+You can write the model deserialization directly in the constructor of the Service class. Still, in this tutorial we'll write the deserialization code in [another module file](#Model---model-init-by-deserialization) and use inheritance to compose it into the Service class.
 
 ```python
 from ..model.init.defaultload import DefaultloadModelInit
@@ -440,16 +463,18 @@ We can directly use [model.predict](https://www.tensorflow.org/api_docs/python/t
 ```python
     return json.dumps(self.predict(x).tolist())
 ```
-### Done service file editing
+### Final code of service module
+
+Filename: ```/my_dong_mnist/service/default.py```
 ```python
 from __future__ import division
 import json
 import numpy
 import dong.framework
-from dong_mnist_example.model.init.default_load import DefaultModelLoad
+from dong_mnist_example.model.init.default_load import DefaultloadModelInit
 
 
-class DefaultService(DefaultModelLoad, dong.framework.Service):
+class DefaultService(DefaultloadModelInit, dong.framework.Service):
 
     @dong.framework.request_handler
     def serve(self, request_body, mime_type='application/json'):
@@ -466,7 +491,7 @@ class DefaultService(DefaultModelLoad, dong.framework.Service):
 
 ## Add package dependencies
 ### File location
-Edit ```setup.py```
+Open ```setup.py```
 ```python
 from setuptools import setup, find_packages
 
@@ -488,7 +513,10 @@ setup(name='my_dong_mnist',
           'tensorflow',
       ],
 ```
-### Done dependencies declaration
+
+### Final code of setup file
+
+Filename: ```setup.py```
 ```python
 from setuptools import setup, find_packages
 
@@ -507,7 +535,7 @@ setup(name='my_dong_mnist',
       },
     )
 ```
-## Execute my_dong_mnist
+## Execute my\_dong\_mnist
 ### Train
 ```bash
 $ ls # make sure we're under the write directory
@@ -567,4 +595,3 @@ The reply should look something like this
 ```
 [[2.879309568548649e-10, 2.6625946239478004e-11, 2.580107016925126e-09, 5.453760706930488e-12, 0.9999690055847168, 3.3259575649147166e-10, 3.2778924019538636e-10, 4.35676184906697e-07, 2.190379821964683e-10, 3.0488341508316807e-05], [1.3478038130010361e-10, 0.9997259974479675, 6.728584622806011e-08, 5.9139901864568856e-09, 9.023875122693426e-07, 5.708465922182882e-10, 1.2523435088951373e-07, 0.0002721738419495523, 6.667413003924594e-07, 9.076808638042166e-09]]
 ```
-
