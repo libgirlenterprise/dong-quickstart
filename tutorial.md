@@ -345,7 +345,7 @@ def read(self, save_dir):
 
 ### Final code of model serializer module
 
-Filename:```/my_dong_mnist/save_load/default.py```
+Filename:```/my_dong_mnist/model/serializer/default.py```
 ```python
 def write(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
@@ -367,7 +367,7 @@ We can init a model by loading it from a trained model to
 
 run at the root of your ML project:
 ```bash
-$ dong template --model-init-module defaultload
+$ dong template --model-init-module default_load
 ```
 And open the generated ```/my_dong_mnist/model/init/default_load.py```, we can see it as follows:
 
