@@ -340,7 +340,7 @@ We'll use [tensorflow.keras.Model.load_weights](https://www.tensorflow.org/api_d
 ```python
 def read(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
-    self.load_weights(_export_path)
+    self.load_weights(export_path)
 ```
 
 ### Final code of model serializer module
