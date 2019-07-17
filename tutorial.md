@@ -246,7 +246,7 @@ class DefaultModelInit(tensorflow.keras.models.Sequential):
 
 Then we can have a **tensorflow** multilevel perceptron model.
 
-Filename: ```my_dong_mnist/models/init/default.py```
+Filename: ```my_dong_mnist/model/init/default.py```
 ```python
 import tensorflow
 
@@ -345,7 +345,7 @@ def read(self, save_dir):
 
 ### Final code of model serializer module
 
-Filename:```/my_dong_mnist/save_load/default.py```
+Filename:```/my_dong_mnist/serializer/default.py```
 ```python
 def write(self, save_dir):
     export_path = save_dir + 'my_model_weights.hdf5'
