@@ -471,7 +471,7 @@ from __future__ import division
 import json
 import numpy
 import dong.framework
-from my_dong_mnist.model.init.defaultload import DefaultloadModelInit
+from ..model.init.defaultload import DefaultloadModelInit
 
 
 class DefaultService(DefaultloadModelInit, dong.framework.Service):
